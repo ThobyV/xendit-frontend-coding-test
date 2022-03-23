@@ -1,0 +1,279 @@
+.sidebar {
+  height: 100vh;
+  width: 15%;
+  background-color: #111827;
+}
+
+.sidebar-content {
+  height: 100%;
+  padding: 0rem 1.5rem;
+}
+
+.navbar {
+  width: 100%;
+  height: 64px;
+  background: #fff;
+  box-shadow: 0 5px 5px rgba(51, 51, 51, 0.1);
+  position: relative;
+}
+
+.navbar-items {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-items > div {
+  padding: 0.5rem 1rem;
+}
+
+.content {
+  background-color: #fafafa;
+  width: 85%;
+}
+
+.content-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-center-page {
+  width: 100%;
+  padding: 0 3rem;
+}
+
+.container {
+  display: flex;
+}
+
+.card {
+  width: auto;
+  background-color: white;
+  padding: 3.3rem 2.5rem;
+  box-shadow: 0px 1px 1px rgba(100, 116, 139, 0.06),
+    0px 1px 2px rgba(100, 116, 139, 0.1);
+  border-radius: 8px;
+}
+
+.card-sm {
+  width: auto;
+  padding: 2.5rem 2rem;
+  font-size: larger;
+  box-shadow: 0px 4px 6px -2px rgba(100, 116, 139, 0.05),
+    0px 10px 15px -3px rgba(100, 116, 139, 0.12);
+}
+
+.flex-80 {
+  flex: 0 0 80%;
+}
+
+.border-rounded,
+.border-rounded-2 {
+  position: relative;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 1.2rem 1.3rem;
+}
+
+.border-rounded-2 {
+  margin-bottom: 1rem;
+}
+
+.nav {
+  width: auto;
+  border-radius: 8px;
+  padding: 1.2rem 2.3rem;
+}
+
+.no-outline input,
+select,
+button {
+  border: none;
+  font-size: large;
+  appearance: none;
+  background-color: transparent;
+}
+
+.border-text,
+.border-text-2 {
+  padding: 0 0.5rem;
+  position: absolute;
+  top: -20%;
+  background-color: white;
+  color: black;
+}
+
+.border-text-2 {
+  top: -20%;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-main {
+  position: fixed;
+  background: white;
+  width: 30%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.d-block {
+  display: block;
+}
+
+.d-none {
+  display: none;
+}
+
+.py-1 {
+  padding: 1rem 0;
+}
+
+.px-1 {
+  padding: 0 1rem;
+}
+
+.py-2 {
+  padding: 2rem 0;
+}
+
+.px-2 {
+  padding: 0 2rem;
+}
+
+.py-3 {
+  padding: 3rem 0;
+}
+
+.px-3 {
+  padding: 0 3rem;
+}
+
+.pb-3 {
+  padding-bottom: 3rem;
+}
+
+.pl-1 {
+  padding-left: 1rem;
+}
+
+.pl-3 {
+  padding-left: 3rem;
+}
+
+.ml-2 {
+  margin-left: 2rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex-by-top {
+  display: flex;
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.m-end {
+  margin-top: auto;
+}
+
+.m-right {
+  margin-right: auto;
+}
+
+.m-left {
+  margin-left: auto;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.bg-purple {
+  background-color: #5048e5;
+}
+
+.bg-grey-5 {
+  background-color: #f3f4f6;
+}
+
+.f-large {
+  font-size: large;
+}
+
+.f-black {
+  color: #111827;
+}
+
+.half-w {
+  flex: 0 0 50%;
+}
+
+.top-border-radius {
+  border-top-left-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  border: 1px solid #e3e3e3;
+}
+
+button.button-purple {
+  width: 100%;
+  padding: 1rem 1.6rem;
+  border-radius: 0.5rem;
+  background-color: #5048e5;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+
+button.button-purple-border {
+  width: 100%;
+  padding: 1rem 1.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #5048e5;
+  cursor: pointer;
+  color: #5048e5;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+button.button-green {
+  width: 100%;
+  padding: 1rem 4rem;
+  border-radius: 0.5rem;
+  background-color: #10B981;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+}
