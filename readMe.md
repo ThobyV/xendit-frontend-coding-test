@@ -7,7 +7,7 @@ Please clone the repo and run the following commands:
 ```cd xendit-frontend-coding-test```
 
 
-```npm install` [install dependencies]
+```npm install``` [install dependencies]
 
 ```npm run dev``` [start local dev server]
 
