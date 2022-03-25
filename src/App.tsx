@@ -506,7 +506,7 @@ const Content = () => {
         <LoadingAnimation loading={loading} />
 
         <div className='card'>
-          <div className='flex pb-3'>
+          <div className='flex pb-3-lg wrap-sm mb-2-sm-all'>
             <div
               className="flex-80 border-rounded"
             >
@@ -514,12 +514,12 @@ const Content = () => {
                 <div>
                   <img src={search} />
                 </div>
-                <div className='no-outline'>
-                  <input className="px-2" type="text" value="Search universities name" />
+                <div className='px-2 no-outline'>
+                  <input type="text" value="Search universities name" />
                 </div>
               </div>
             </div>
-            <div className='border-rounded ml-2'>
+            <div className='border-rounded ml-2-lg'>
               <span className='border-text'>
                 Country
               </span>
@@ -537,7 +537,7 @@ const Content = () => {
                 </div>
               </div>
             </div>
-            <div className='border-rounded ml-2'>
+            <div className='border-rounded ml-2-lg'>
               <span className='border-text'>
                 Sort Item
               </span>

@@ -4,6 +4,7 @@
   height: 4px;
 }
 
+
 .loading-animation {
   background-color: #10b981;
   width: 90%;
@@ -25,6 +26,7 @@
 }
 
 .sidebar {
+  z-index: 1;
   height: 100vh;
   width: 15%;
   background-color: #111827;
@@ -36,25 +38,6 @@
   height: 100%;
   width: auto;
   padding: 0rem 1.5rem;
-}
-
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 64px;
-  background: #fff;
-  box-shadow: 0 5px 5px rgba(51, 51, 51, 0.1);
-  position: relative;
-}
-
-.navbar-items {
-  display: flex;
-  align-items: center;
-}
-
-.navbar-items > div {
-  padding: 0.5rem 1rem;
 }
 
 .content {
@@ -74,7 +57,28 @@
 }
 
 .container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: flex;
+}
+
+.navbar {
+  top: 0;
+  width: 100%;
+  height: 64px;
+  background: #fff;
+  box-shadow: 0 5px 5px rgba(51, 51, 51, 0.1);
+  position: relative;
+}
+
+.navbar-items {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-items > div {
+  padding: 0.5rem 1rem;
 }
 
 .list {
@@ -373,4 +377,50 @@ button.button-green {
   cursor: pointer;
   color: white;
   font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .wrap-sm {
+    flex-direction: column;
+  }
+
+  .mb-2-sm-all > div {
+    margin-bottom: 2rem;
+  }
+
+  .sidebar {
+    display: none;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+  }
+
+  .container {
+    display: block;
+    width: 100%;
+  }
+
+  .content {
+    width: 100%;
+    position: absolute;
+  }
+
+  .content-center-page {
+    padding: 0 1rem;
+  }
+
+  .card {
+    padding: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ml-2-lg {
+    margin-left: 2rem;
+  }
+
+  .pb-3-lg {
+    padding-bottom: 3rem;
+  }
 }
