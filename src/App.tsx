@@ -427,7 +427,7 @@ const Content = () => {
   const [requestData, setRequestData] = useState({ data: [], total: 0, last_page: 0, current_page: 0 });
   const [queryParams, setQueryParams] = useState({ per_page: 10, current_page: 1, next_page: 2, total_pages: 0 });
 
-  const [filterParams, setFilterParams] = useState({ sortName: 'Name', sortCountry: 'Country' });
+  const [sortParams, setSortParams] = useState({ sortCountry: 'Country', sortValue: 'Name' });
 
   const [createStatus, setCreateStatus] = useState(false);
   const [viewStatus, setViewStatus] = useState(false);
@@ -449,6 +449,10 @@ const Content = () => {
     setQueryParams({ ...queryParams, per_page: e.target.value })
   }
 
+  const handleSort = (e: any) => {
+    setSortParams({ ...sortParams, sortValue: e.target.value })
+  }
+
   const handlePrevPage = (e: any) => {
     setQueryParams((queryParams) => ({ ...queryParams, current_page: queryParams.current_page-- }))
   }
@@ -460,7 +464,8 @@ const Content = () => {
     try {
       setLoading(true);
       const { per_page, current_page } = queryParams;
-      const data = await (await fetch(`${apiurl}?limit=${per_page}&page=${current_page}`)).json();
+      const { sortValue } = sortParams;
+      const data = await (await fetch(`${apiurl}?limit=${per_page}&page=${current_page}&sort=${sortValue},asc`)).json();
       setRequestData(data);
       setLoading(false);
     } catch (e) {
@@ -476,7 +481,7 @@ const Content = () => {
     if (requestData.total) {
       getUniversities();
     }
-  }, [queryParams])
+  }, [queryParams, sortParams])
 
   return (
     <div className='content-center'>
@@ -538,9 +543,9 @@ const Content = () => {
               </span>
               <div className='no-outline f-large'>
                 <div className='flex'>
-                  <select className='cursor-pointer' value={filterParams.sortName}>
-                    <option value='30'>Name</option>
-                    <option value='30'>Country</option>
+                  <select onChange={handleSort} className='cursor-pointer' value={sortParams.sortValue}>
+                    <option value='name'>Name</option>
+                    <option value='country'>Country</option>
                   </select>
                   <div className='pl-2'>
                     <img src={selectarrow} />
@@ -574,9 +579,9 @@ const Content = () => {
                     <option value='10'>10</option>
                     <option value='20'>20</option>
                     <option value='30'>30</option>
-                    <option value='30'>40</option>
-                    <option value='30'>50</option>
-                    <option value='30'>100</option>
+                    <option value='40'>40</option>
+                    <option value='50'>50</option>
+                    <option value='100'>100</option>
                   </select>
                 </div>
                 <div className='pl'><img src={selectarrow} /></div>
@@ -584,10 +589,10 @@ const Content = () => {
               <div className='px-3'>{requestData.current_page}-{requestData.last_page} of {requestData.total}</div>
               <div className='flex flex-space-between'>
                 <div>
-                  <button className="no-outline" onClick={handlePrevPage}><img src={arrowleft} /></button>
+                  <button className="no-outline cursor-pointer" onClick={handlePrevPage}><img src={arrowleft} /></button>
                 </div>
                 <div className='px-3'>
-                  <button className="no-outline" onClick={handleNextPage}><img src={arrowright} /></button>
+                  <button className="no-outline cursor-pointer" onClick={handleNextPage}><img src={arrowright} /></button>
                 </div>
               </div>
             </div>
