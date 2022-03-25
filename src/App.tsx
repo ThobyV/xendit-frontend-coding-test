@@ -10,6 +10,7 @@ import logo from './SvgIcons/logo.svg'
 import home from './SvgIcons/home.svg'
 import close from './SvgIcons/close.svg'
 import edit from './SvgIcons/edit.svg'
+import hamburger from './SvgIcons/hamburger.svg'
 import deleteicon from './SvgIcons/deleteicon.svg'
 import selectarrow from './SvgIcons/selectarrow.svg'
 import arrowleft from './SvgIcons/arrowleft.svg'
@@ -367,8 +368,9 @@ const Modal = ({ title, isOpen, handleModal, children }: { title: string, isOpen
 const NavBar = () => {
 
   return (<div className='navbar'>
-    <div className='navbar-items'>
-      <div className='m-left'><img src={search} /></div>
+    <div className='navbar-items sm-space-between'>
+      <div className='m-left'>
+        <img src={search} /></div>
       <div><img src={contacts} /></div>
       <div><img src={notifications} /></div>
       <div><img src={settings} /></div>
@@ -586,7 +588,7 @@ const Content = () => {
                 </div>
                 <div className='pl'><img src={selectarrow} /></div>
               </div>
-              <div className='px-3'>{requestData.current_page}-{requestData.last_page} of {requestData.total}</div>
+              <div className='px-2'>{requestData.current_page}-{requestData.last_page} of {requestData.total}</div>
               <div className='flex flex-space-between'>
                 <div>
                   <button className="no-outline cursor-pointer" onClick={handlePrevPage}><img src={arrowleft} /></button>

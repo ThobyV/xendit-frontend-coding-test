@@ -386,6 +386,22 @@ button.button-green {
     margin-bottom: 2rem;
   }
 
+  .px-2 {
+    padding: 0 1rem;
+  }
+  
+  .px-3 {
+    padding: 0 2rem;
+  }
+
+  .m-left {
+    margin: 0;
+  }
+
+  .sm-space-between {
+    justify-content: space-between;
+  }
+
   .sidebar {
     display: none;
     width: 100%;
@@ -423,5 +439,9 @@ button.button-green {
 
   .pb-3-lg {
     padding-bottom: 3rem;
+  }
+
+  .px-3-lg {
+    padding: 0 3rem;
   }
 }
