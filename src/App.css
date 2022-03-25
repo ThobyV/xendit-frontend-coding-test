@@ -4,7 +4,6 @@
   height: 4px;
 }
 
-
 .loading-animation {
   background-color: #10b981;
   width: 90%;
@@ -23,6 +22,12 @@
   to {
     width: 90%;
   }
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
 
 .sidebar {
@@ -54,13 +59,6 @@
 .content-center-page {
   width: 100%;
   padding: 0 3rem;
-}
-
-.container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
 }
 
 .navbar {
@@ -390,13 +388,12 @@ button.button-green {
 
   .sidebar {
     display: none;
-    height: 100vh;
     width: 100%;
     position: absolute;
-    top: 0;
   }
 
   .container {
+    position: absolute;
     display: block;
     width: 100%;
   }
@@ -412,6 +409,10 @@ button.button-green {
 
   .card {
     padding: 0;
+  }
+
+  .modal-main {
+    width: 100%;
   }
 }
 
