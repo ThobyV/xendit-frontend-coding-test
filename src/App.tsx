@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import search from './SvgIcons/search.svg'
 import notifications from './SvgIcons/notifications.svg'
 import settings from './SvgIcons/settings.svg'
@@ -16,10 +16,29 @@ import selectarrow from './SvgIcons/selectarrow.svg'
 import arrowleft from './SvgIcons/arrowleft.svg'
 import arrowright from './SvgIcons/arrowright.svg'
 
+/**
+ * 
+ * TODO
+ *  - add hover fx to buttons and menu icons
+ *    add notification cards
+ *    add redux - like global state managment
+ *    fix button forward page bug
+ *    fix search 
+ *    fix country select
+ *    add responsive menu
+ *    add overlay loader
+ */
 
 import './App.css'
 
-const apiurl: string = 'https://university-api.tranityproject.com/api/v1/university';
+
+interface Api {
+  url: string,
+  path: {
+    country: string,
+    university: string,
+  }
+}
 
 interface ListProps {
   name: string,
@@ -28,6 +47,24 @@ interface ListProps {
   id: number,
 }
 
+interface Universities {
+  data: Array<any>,
+  total: number,
+  last_page: number,
+  current_page: number,
+}
+
+interface Countries {
+  name: string
+}
+
+const api: Api = {
+  url: 'https://university-api.tranityproject.com/api/v1',
+  path: {
+    country: 'country',
+    university: 'university'
+  }
+}
 
 const LoadingAnimation = ({ loading }: { loading: boolean }) => {
   return loading ? <div className='loading-animation'>
@@ -44,7 +81,7 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
 
   const addItem = useCallback(async () => {
     try {
-      const data = await fetch(apiurl, {
+      const data = await fetch(`${api.url}/${api.path.university}`, {
         body: JSON.stringify({ name, country, domains: [domain], web_pages: [webPages], alpha_two_code: 234 }),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -143,7 +180,7 @@ const EditItem = ({ item, handleModal }: { item: any, handleModal: () => void })
 
   const editItem = useCallback(async () => {
     try {
-      const data = await fetch(`${apiurl}/${item.id}`, {
+      const data = await fetch(`${api.url}/${api.path.university}/${item.id}`, {
         body: JSON.stringify({ name, country, domains: [domain], web_pages: [webPages], alpha_two_code: item.id }),
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -228,7 +265,12 @@ const EditItem = ({ item, handleModal }: { item: any, handleModal: () => void })
   )
 }
 
-const ViewItem = ({ item, handleViewModal, handleEditModal, }: { handleViewModal: () => void, handleEditModal: () => void, item: { id: number, name: string, created_at: string, updated_at: string, web_pages: Array<string>, domains: string | Array<string>, country: string } }) => {
+const ViewItem = ({ item, handleViewModal, handleEditModal, }:
+  {
+    handleViewModal: () => void,
+    handleEditModal: () => void,
+    item: { id: number, name: string, created_at: string, updated_at: string, web_pages: Array<string>, domains: string | Array<string>, country: string }
+  }) => {
 
   const closeViewModal = () => {
     handleViewModal();
@@ -241,7 +283,7 @@ const ViewItem = ({ item, handleViewModal, handleEditModal, }: { handleViewModal
 
   const deleteItem = useCallback(async () => {
     try {
-      const data = await fetch(`${apiurl}/${item.id}`, {
+      const data = await fetch(`${api.url}/${api.path.university}/${item.id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       })
@@ -345,7 +387,7 @@ const ViewItem = ({ item, handleViewModal, handleEditModal, }: { handleViewModal
   )
 }
 
-const Modal = ({ title, isOpen, handleModal, children }: { title: string, isOpen: boolean, handleModal: () => void, children: any }) => {
+const Modal = ({ title, isOpen, handleModal, children }: { title: string, isOpen: boolean, handleModal: () => void, children: JSX.Element }) => {
 
   return (
     <div className={` modal ${isOpen ? 'd-block' : 'd-none'}`}>
@@ -426,10 +468,14 @@ const List: any = ({ list, viewStatus, editStatus, handleViewModal, handleEditMo
 }
 
 const Content = () => {
-  const [requestData, setRequestData] = useState({ data: [], total: 0, last_page: 0, current_page: 0 });
-  const [queryParams, setQueryParams] = useState({ per_page: 10, current_page: 1, next_page: 2, total_pages: 0 });
+  const [apiData, setApiData] = useState<{ universities: Universities, countries: Array<Countries>, }>({
+    universities: { data: [], total: 0, last_page: 0, current_page: 0 },
+    countries: []
+  })
 
-  const [sortParams, setSortParams] = useState({ sortCountry: 'Country', sortValue: 'Name' });
+  const [canReload, setCanReload] = useState(false);
+  const [queryParams, setQueryParams] = useState({ per_page: 10, current_page: 1, next_page: 2, total_pages: 0 });
+  const [sortParams, setSortParams] = useState({ sortCountry: '', sortValue: 'Name' });
 
   const [createStatus, setCreateStatus] = useState(false);
   const [viewStatus, setViewStatus] = useState(false);
@@ -447,42 +493,47 @@ const Content = () => {
     setCreateStatus(!createStatus)
   }
 
-  const handlePerPage = (e: any) => {
+  const handlePerPage = (e: React.BaseSyntheticEvent) => {
     setQueryParams({ ...queryParams, per_page: e.target.value })
   }
 
-  const handleSort = (e: any) => {
+  const handleSort = (e: React.BaseSyntheticEvent) => {
     setSortParams({ ...sortParams, sortValue: e.target.value })
   }
 
-  const handlePrevPage = (e: any) => {
+  const handleSortByCountry = (e: React.BaseSyntheticEvent) => {
+    setSortParams({ ...sortParams, sortCountry: e.target.value })
+  }
+
+  const handlePrevPage = () => {
     setQueryParams((queryParams) => ({ ...queryParams, current_page: queryParams.current_page-- }))
   }
-  const handleNextPage = (e: any) => {
+  const handleNextPage = () => {
     setQueryParams((queryParams) => ({ ...queryParams, current_page: queryParams.current_page++ }))
   }
 
-  const getUniversities = async () => {
-    try {
-      setLoading(true);
-      const { per_page, current_page } = queryParams;
-      const { sortValue } = sortParams;
-      const data = await (await fetch(`${apiurl}?limit=${per_page}&page=${current_page}&sort=${sortValue},asc`)).json();
-      setRequestData(data);
-      setLoading(false);
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
   useEffect(() => {
-    getUniversities();
+    const fetchData = async () => {
+      const { data } = await (await fetch(`${api.url}/${api.path.country}?limit=243&sort=name,asc`)).json();
+      setApiData({ ...apiData, countries: data })
+    }
+    fetchData()
   }, [])
 
   useEffect(() => {
-    if (requestData.total) {
-      getUniversities();
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const { per_page, current_page } = queryParams;
+        const { sortValue } = sortParams;
+        const universities = await (await fetch(`${api.url}/${api.path.university}?${sortParams.sortCountry && `country=${sortParams.sortCountry}&`}limit=${per_page}&page=${current_page}&sort=${sortValue},asc`)).json();
+        setApiData(data => ({ ...data, universities }))
+        setLoading(false);
+      } catch (e) {
+        console.log(e)
+      }
     }
+    fetchData();
   }, [queryParams, sortParams])
 
   return (
@@ -527,11 +578,9 @@ const Content = () => {
               </span>
               <div className='flex'>
                 <div className='no-outline f-large'>
-                  <select>
-                    <option>Germany</option>
-                    <option>United states</option>
-                    <option>India</option>
-                    <option>Nigeria</option>
+                  <select onChange={handleSortByCountry} value={sortParams.sortCountry}>
+                    {apiData?.countries.map(c => (<option key={c.name}>{c.name}</option>
+                    ))}
                   </select>
                 </div>
                 <div className='pl-2'>
@@ -571,7 +620,7 @@ const Content = () => {
               country
             </div>
           </div>
-          <List list={requestData.data} handleEditModal={handleEdit} handleViewModal={handleView} viewStatus={viewStatus} editStatus={editStatus} />
+          <List list={apiData?.universities.data} handleEditModal={handleEdit} handleViewModal={handleView} viewStatus={viewStatus} editStatus={editStatus} />
           <div className='list-card'>
             <div className='flex'>
               <div className='m-left'>Rows per page:</div>
@@ -588,7 +637,7 @@ const Content = () => {
                 </div>
                 <div className='pl'><img src={selectarrow} /></div>
               </div>
-              <div className='px-2'>{requestData.current_page}-{requestData.last_page} of {requestData.total}</div>
+              <div className='px-2'>{apiData?.universities.current_page}-{apiData?.universities.last_page} of {apiData?.universities.total}</div>
               <div className='flex flex-space-between'>
                 <div>
                   <button className="no-outline cursor-pointer" onClick={handlePrevPage}><img src={arrowleft} /></button>
