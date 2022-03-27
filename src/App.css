@@ -355,6 +355,14 @@ button.button-purple {
   font-weight: bold;
 }
 
+button.button-purple:hover {
+  background-color: #130abe;
+}
+
+button.button-purple:active {
+  background-color: #706af0;
+}
+
 button.button-purple-border {
   width: 100%;
   padding: 1rem 1.6rem;

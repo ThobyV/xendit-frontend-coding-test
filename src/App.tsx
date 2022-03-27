@@ -567,7 +567,7 @@ const Content = () => {
                 <div>
                   <img src={search} />
                 </div>
-                <div className='px-2 no-outline'>
+                <div className='no-outline px-2 flex-80'>
                   <input type="text" value="Search universities name" />
                 </div>
               </div>
