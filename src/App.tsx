@@ -473,8 +473,8 @@ const Content = () => {
     countries: []
   })
 
-  const [canReload, setCanReload] = useState(false);
-  const [queryParams, setQueryParams] = useState({ per_page: 10, current_page: 1, next_page: 2, total_pages: 0 });
+  const [searchInput, setSearchInput] = useState<string>('')
+  const [queryParams, setQueryParams] = useState({ per_page: 10, current_page: 1, next_page: 2, total_pages: 0, search: '' });
   const [sortParams, setSortParams] = useState({ sortCountry: '', sortValue: 'Name' });
 
   const [createStatus, setCreateStatus] = useState(false);
@@ -505,6 +505,14 @@ const Content = () => {
     setSortParams({ ...sortParams, sortCountry: e.target.value })
   }
 
+  const handleSearchInput = (e: React.BaseSyntheticEvent) => {
+    setSearchInput(e.target.value)
+  }
+  const handleSearch = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter')
+      setQueryParams((queryParams) => ({ ...queryParams, search: searchInput }))
+  }
+
   const handlePrevPage = () => {
     setQueryParams((queryParams) => ({ ...queryParams, current_page: queryParams.current_page-- }))
   }
@@ -515,7 +523,7 @@ const Content = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await (await fetch(`${api.url}/${api.path.country}?limit=243&sort=name,asc`)).json();
-      setApiData({ ...apiData, countries: data })
+      setApiData(_data => ({ ..._data, countries: data }))
     }
     fetchData()
   }, [])
@@ -526,7 +534,7 @@ const Content = () => {
         setLoading(true);
         const { per_page, current_page } = queryParams;
         const { sortValue } = sortParams;
-        const universities = await (await fetch(`${api.url}/${api.path.university}?${sortParams.sortCountry && `country=${sortParams.sortCountry}&`}limit=${per_page}&page=${current_page}&sort=${sortValue},asc`)).json();
+        const universities = await (await fetch(`${api.url}/${api.path.university}?${queryParams.search && `name=${queryParams.search}&`}${sortParams.sortCountry && `country=${sortParams.sortCountry}&`}limit=${per_page}&page=${current_page}&sort=${sortValue},asc`)).json();
         setApiData(data => ({ ...data, universities }))
         setLoading(false);
       } catch (e) {
@@ -568,7 +576,7 @@ const Content = () => {
                   <img src={search} />
                 </div>
                 <div className='no-outline px-2 flex-80'>
-                  <input type="text" value="Search universities name" />
+                  <input type="text" value={searchInput} onChange={handleSearchInput} onKeyDown={handleSearch} />
                 </div>
               </div>
             </div>
