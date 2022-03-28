@@ -323,7 +323,7 @@ const ViewItem = ({ item, handleViewModal, handleEditModal, }:
               <div>
                 <img src={edit} />
               </div>
-              <div className='no-outline f-large pl-1 f-purple bold'>
+              <div className='no-outline cursor-pointer  f-large pl-1 f-purple bold'>
                 Edit
               </div>
             </div>
@@ -336,7 +336,7 @@ const ViewItem = ({ item, handleViewModal, handleEditModal, }:
               <div>
                 <img src={deleteicon} />
               </div>
-              <div className='no-outline f-large pl-1 bold'>
+              <div className='no-outline cursor-pointer f-large pl-1 bold'>
                 Delete
               </div>
             </div>
@@ -469,7 +469,7 @@ const List: any = ({ list, viewStatus, editStatus, handleViewModal, handleEditMo
           <div className='half-w flex'>
             {l.country}
             <div className='m-left'>
-              <button className="no-outline" onClick={() => handleViewItem(l.id)}><img src={menu} /></button>
+              <button className="no-outline menu-hover" onClick={() => handleViewItem(l.id)}><img src={menu} /></button>
             </div>
           </div>
         </div>))

@@ -191,6 +191,12 @@ button {
   }
 }
 
+.menu-hover:hover {
+  background-color: #d1d5db;
+  padding: 0.5rem 1rem;
+  border-radius: 35px;
+}
+
 .d-block {
   display: block;
 }
