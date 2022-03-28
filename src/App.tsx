@@ -510,7 +510,7 @@ const Content = () => {
   }
   const handleSearch = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter')
-      setQueryParams((queryParams) => ({ ...queryParams, search: searchInput }))
+      setQueryParams(({ ...queryParams, search: searchInput }))
   }
 
   const handlePrevPage = () => {
