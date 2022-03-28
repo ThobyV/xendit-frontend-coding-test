@@ -66,6 +66,13 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
   const [domain, setDomain] = useState('')
   const [webPages, setWebPages] = useState('')
 
+  const resetInputs = () => {
+    setName('');
+    setCountry('')
+    setDomain('')
+    setWebPages('')
+  }
+
   const addItem = useCallback(async () => {
     try {
       const data = await fetch(`${api.url}/${api.path.university}`, {
@@ -74,6 +81,7 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
         headers: { 'Content-Type': 'application/json' },
       })
       console.log(await data.json());
+      resetInputs();
       handleModal();
     } catch (e) {
       console.log(e)
