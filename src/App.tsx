@@ -10,24 +10,11 @@ import logo from './SvgIcons/logo.svg'
 import home from './SvgIcons/home.svg'
 import close from './SvgIcons/close.svg'
 import edit from './SvgIcons/edit.svg'
-import hamburger from './SvgIcons/hamburger.svg'
 import deleteicon from './SvgIcons/deleteicon.svg'
 import selectarrow from './SvgIcons/selectarrow.svg'
 import arrowleft from './SvgIcons/arrowleft.svg'
 import arrowright from './SvgIcons/arrowright.svg'
 
-/**
- * 
- * TODO
- *  - add hover fx to buttons and menu icons
- *    add notification cards
- *    add redux - like global state managment
- *    fix button forward page bug
- *    fix search 
- *    fix country select
- *    add responsive menu
- *    add overlay loader
- */
 
 import './App.css'
 
