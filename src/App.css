@@ -395,7 +395,58 @@ button.button-green {
   font-weight: bold;
 }
 
+
+
+@media (min-width: 1024px) {
+  .lg-block {
+    display: block;
+  }
+
+  .ml-2-lg {
+    margin-left: 2rem;
+  }
+
+  .pb-3-lg {
+    padding-bottom: 3rem;
+  }
+
+  .px-3-lg {
+    padding: 0 3rem;
+  }
+
+  button.button-green {
+    padding: 0.65rem 1rem;
+  }
+
+  .card-sidebar {
+    padding: 0.5rem 1.8rem;
+  }
+  .pl-1 {
+    padding-left: 0.5rem;
+  }
+
+  .sidebar {
+    width: 20%;
+  }
+
+  .sidebar-content {
+    padding: 0rem 1rem;
+  }
+}
+
+
 @media (max-width: 768px) {
+
+  .container {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
   .only-mobile {
     display: block;
   }
@@ -422,11 +473,6 @@ button.button-green {
 
   .sm-space-between {
     justify-content: space-between;
-  }
-
-  .sidebar {
-    width: 100%;
-    position: absolute;
   }
 
   .slideIn {
@@ -478,41 +524,5 @@ button.button-green {
 
   .modal-main {
     width: 100%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .lg-block {
-    display: block;
-  }
-
-  .ml-2-lg {
-    margin-left: 2rem;
-  }
-
-  .pb-3-lg {
-    padding-bottom: 3rem;
-  }
-
-  .px-3-lg {
-    padding: 0 3rem;
-  }
-
-  button.button-green {
-    padding: 0.65rem 1rem;
-  }
-
-  .card-sidebar {
-    padding: 0.5rem 1.8rem;
-  }
-  .pl-1 {
-    padding-left: 0.5rem;
-  }
-
-  .sidebar {
-    width: 20%;
-  }
-  .sidebar-content {
-    padding: 0rem 1rem;
   }
 }

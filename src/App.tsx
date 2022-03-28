@@ -729,6 +729,12 @@ const SideBar = () => {
       </div>
     </div>)
 }
+
+const MainContent = () => (<div className='content'>
+  <NavBar />
+  <Content />
+</div>)
+
 function App() {
   const [countries, setCountries] = useState<Countries[]>([])
   const [sidebarStatus, setSidebarStatus] = useState<boolean>(false)
@@ -738,10 +744,7 @@ function App() {
       <div className='App'>
         <div className='container'>
           <SideBar />
-          <div className='content'>
-            <NavBar />
-            <Content />
-          </div>
+          <MainContent />
         </div>
         <ToastContainer />
       </div>
