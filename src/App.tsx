@@ -535,7 +535,7 @@ const Content = () => {
         const { per_page, current_page } = queryParams;
         const { sortValue } = sortParams;
         const universities = await (await fetch(`${api.url}/${api.path.university}?${queryParams.search && `name=${queryParams.search}&`}${sortParams.sortCountry && `country=${sortParams.sortCountry}&`}limit=${per_page}&page=${current_page}&sort=${sortValue},asc`)).json();
-        setApiData(data => ({ ...data, universities }))
+        setApiData({ ...apiData, universities })
         setLoading(false);
       } catch (e) {
         console.log(e)
@@ -576,7 +576,7 @@ const Content = () => {
                   <img src={search} />
                 </div>
                 <div className='no-outline px-2 flex-80'>
-                  <input type="text" value={searchInput} onChange={handleSearchInput} onKeyDown={handleSearch} />
+                  <input type="text" placeholder='Search universities name' value={searchInput} onChange={handleSearchInput} onKeyDown={handleSearch} />
                 </div>
               </div>
             </div>
