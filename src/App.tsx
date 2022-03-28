@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import search from './SvgIcons/search.svg'
 import notifications from './SvgIcons/notifications.svg'
 import settings from './SvgIcons/settings.svg'
@@ -81,8 +83,9 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
         headers: { 'Content-Type': 'application/json' },
       })
       console.log(await data.json());
-      resetInputs();
       handleModal();
+      toast.success(`university ${name} created successfully`);
+      resetInputs();
     } catch (e) {
       console.log(e)
     }
@@ -108,9 +111,9 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
         <div className='flex'>
           <div className='no-outline f-large'>
             <select onChange={e => setCountry(e.target.value)} value={country}>
-              <option value='10'>Nigeria</option>
-              <option value='20'>London</option>
-              <option value='30'>Finland</option>
+              <option value='Nigeria'>Nigeria</option>
+              <option value='London'>London</option>
+              <option value='Finland'>Finland</option>
               <option value='30'>USA</option>
               <option value='30'>India</option>
               <option value='30'>Germany</option>
@@ -182,6 +185,7 @@ const EditItem = ({ item, handleModal }: { item: any, handleModal: () => void })
       })
       console.log(await data.json());
       handleModal();
+      toast.success(`university ${name} edited successfully`);
     } catch (e) {
       console.log(e)
     }
@@ -284,6 +288,8 @@ const ViewItem = ({ item, handleViewModal, handleEditModal, }:
       })
       console.log(await data.json());
       closeViewModal();
+      toast.success(`university ${item.name} deleted successfully`);
+
     } catch (e) {
       console.log(e)
     }
@@ -696,6 +702,7 @@ function App() {
           <Content />
         </div>
       </div>
+      <ToastContainer />
     </div>
   )
 }
