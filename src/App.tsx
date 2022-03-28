@@ -514,10 +514,10 @@ const Content = () => {
   }
 
   const handlePrevPage = () => {
-    setQueryParams((queryParams) => ({ ...queryParams, current_page: queryParams.current_page-- }))
+    setQueryParams({ ...queryParams, current_page: queryParams.current_page -= 1 })
   }
   const handleNextPage = () => {
-    setQueryParams((queryParams) => ({ ...queryParams, current_page: queryParams.current_page++ }))
+    setQueryParams({ ...queryParams, current_page: queryParams.current_page += 1 })
   }
 
   useEffect(() => {
