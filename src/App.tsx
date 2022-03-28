@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, createContext, useContext } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import search from './SvgIcons/search.svg'
@@ -47,6 +47,9 @@ interface Countries {
   name: string
 }
 
+
+interface appContext { countries: Countries[], setCountries: (state: Countries[]) => void }
+
 const api: Api = {
   url: 'https://university-api.tranityproject.com/api/v1',
   path: {
@@ -54,6 +57,9 @@ const api: Api = {
     university: 'university'
   }
 }
+
+
+const AppContext = createContext<appContext>({ countries: [], setCountries: () => { } });
 
 const LoadingAnimation = ({ loading }: { loading: boolean }) => {
   return loading ? <div className='loading-animation'>
@@ -75,17 +81,26 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
     setWebPages('')
   }
 
+  const { countries, } = useContext(AppContext);
+
   const addItem = useCallback(async () => {
     try {
-      const data = await fetch(`${api.url}/${api.path.university}`, {
+      const data = await (await fetch(`${api.url}/${api.path.university}`, {
         body: JSON.stringify({ name, country, domains: [domain], web_pages: [webPages], alpha_two_code: 234 }),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-      })
-      console.log(await data.json());
-      handleModal();
-      toast.success(`university ${name} created successfully`);
-      resetInputs();
+      })).json()
+      if (data.created_at) {
+        handleModal();
+        resetInputs();
+        toast.success(`university ${name} created successfully`);
+      } else {
+        let message: string = '';
+        for (let key in data) {
+          message = data[key];
+        }
+        window.alert(message)
+      }
     } catch (e) {
       console.log(e)
     }
@@ -111,12 +126,8 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
         <div className='flex'>
           <div className='no-outline f-large'>
             <select onChange={e => setCountry(e.target.value)} value={country}>
-              <option value='Nigeria'>Nigeria</option>
-              <option value='London'>London</option>
-              <option value='Finland'>Finland</option>
-              <option value='30'>USA</option>
-              <option value='30'>India</option>
-              <option value='30'>Germany</option>
+              {countries?.map(c => (<option key={c.name}>{c.name}</option>
+              ))}
             </select>
           </div>
           <div className='pl-3 m-left'>
@@ -169,6 +180,8 @@ const EditItem = ({ item, handleModal }: { item: any, handleModal: () => void })
   const [domain, setDomain] = useState('')
   const [webPages, setWebPages] = useState('')
 
+  const { countries, } = useContext(AppContext);
+
   useEffect(() => {
     setName(item.name);
     setCountry(item.country);
@@ -178,14 +191,21 @@ const EditItem = ({ item, handleModal }: { item: any, handleModal: () => void })
 
   const editItem = useCallback(async () => {
     try {
-      const data = await fetch(`${api.url}/${api.path.university}/${item.id}`, {
+      const data = await (await fetch(`${api.url}/${api.path.university}/${item.id}`, {
         body: JSON.stringify({ name, country, domains: [domain], web_pages: [webPages], alpha_two_code: item.id }),
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-      })
-      console.log(await data.json());
-      handleModal();
-      toast.success(`university ${name} edited successfully`);
+      })).json()
+      if (data.created_at) {
+        handleModal()
+        toast.success(`university ${name} edited successfully`);
+      } else {
+        let message: string = '';
+        for (let key in data) {
+          message = data[key];
+        }
+        window.alert(message)
+      }
     } catch (e) {
       console.log(e)
     }
@@ -210,13 +230,9 @@ const EditItem = ({ item, handleModal }: { item: any, handleModal: () => void })
         </span>
         <div className='no-outline f-large'>
           <div className='flex'>
-            <select className='cursor-pointer' onChange={e => setCountry(e.target.value)} value={country}>
-              <option value='10'>Nigeria</option>
-              <option value='20'>London</option>
-              <option value='30'>Finland</option>
-              <option value='30'>USA</option>
-              <option value='30'>India</option>
-              <option value='30'>Germany</option>
+            <select onChange={e => setCountry(e.target.value)} value={country}>
+              {countries?.map(c => (<option key={c.name}>{c.name}</option>
+              ))}
             </select>
             <div className='pl-3 m-left'>
               <img src={selectarrow} />
@@ -282,14 +298,14 @@ const ViewItem = ({ item, handleViewModal, handleEditModal, }:
 
   const deleteItem = useCallback(async () => {
     try {
-      const data = await fetch(`${api.url}/${api.path.university}/${item.id}`, {
+      const data = await (await fetch(`${api.url}/${api.path.university}/${item.id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-      })
-      console.log(await data.json());
-      closeViewModal();
-      toast.success(`university ${item.name} deleted successfully`);
-
+      })).json()
+      if (!data.error) {
+        closeViewModal();
+        toast.success(`university ${item.name} deleted successfully`);
+      }
     } catch (e) {
       console.log(e)
     }
@@ -469,10 +485,11 @@ const List: any = ({ list, viewStatus, editStatus, handleViewModal, handleEditMo
 }
 
 const Content = () => {
-  const [apiData, setApiData] = useState<{ universities: Universities, countries: Array<Countries>, }>({
+  const [apiData, setApiData] = useState<{ universities: Universities, }>({
     universities: { data: [], total: 0, last_page: 0, current_page: 0 },
-    countries: []
   })
+
+  const { countries, setCountries } = useContext(AppContext);
 
   const [searchInput, setSearchInput] = useState<string>('')
   const [queryParams, setQueryParams] = useState({ per_page: 10, current_page: 1, next_page: 2, total_pages: 0, search: '' });
@@ -524,7 +541,7 @@ const Content = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await (await fetch(`${api.url}/${api.path.country}?limit=243&sort=name,asc`)).json();
-      setApiData(_data => ({ ..._data, countries: data }))
+      setCountries(data);
     }
     fetchData()
   }, [])
@@ -588,7 +605,7 @@ const Content = () => {
               <div className='flex'>
                 <div className='no-outline f-large'>
                   <select onChange={handleSortByCountry} value={sortParams.sortCountry}>
-                    {apiData?.countries.map(c => (<option key={c.name}>{c.name}</option>
+                    {countries?.map(c => (<option key={c.name}>{c.name}</option>
                     ))}
                   </select>
                 </div>
@@ -690,20 +707,22 @@ const SideBar = () => {
   </div>)
 }
 function App() {
-
+  const [countries, setCountries] = useState<Countries[]>([])
   return (
-    <div className='App'>
-      <div className='container'>
-        <div className='sidebar'>
-          <SideBar />
+    <AppContext.Provider value={{ countries, setCountries }}>
+      <div className='App'>
+        <div className='container'>
+          <div className='sidebar'>
+            <SideBar />
+          </div>
+          <div className='content'>
+            <NavBar />
+            <Content />
+          </div>
         </div>
-        <div className='content'>
-          <NavBar />
-          <Content />
-        </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-    </div>
+    </AppContext.Provider>
   )
 }
 
