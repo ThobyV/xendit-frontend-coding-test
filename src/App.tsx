@@ -11,6 +11,7 @@ import menu from './SvgIcons/menu.svg'
 import logo from './SvgIcons/logo.svg'
 import home from './SvgIcons/home.svg'
 import close from './SvgIcons/close.svg'
+import closegrey from './SvgIcons/closegrey.svg'
 import edit from './SvgIcons/edit.svg'
 import deleteicon from './SvgIcons/deleteicon.svg'
 import selectarrow from './SvgIcons/selectarrow.svg'
@@ -48,7 +49,7 @@ interface Countries {
 }
 
 
-interface appContext { countries: Countries[], setCountries: (state: Countries[]) => void }
+interface appContext { countries: Countries[], setCountries: (state: Countries[]) => void, sidebarStatus: boolean, setSidebarStatus: (state: boolean) => void }
 
 const api: Api = {
   url: 'https://university-api.tranityproject.com/api/v1',
@@ -59,7 +60,7 @@ const api: Api = {
 }
 
 
-const AppContext = createContext<appContext>({ countries: [], setCountries: () => { } });
+const AppContext = createContext<appContext>({ countries: [], setCountries: () => { }, sidebarStatus: false, setSidebarStatus: () => { } });
 
 const LoadingAnimation = ({ loading }: { loading: boolean }) => {
   return loading ? <div className='loading-animation'>
@@ -81,7 +82,7 @@ const NewItem = ({ handleModal }: { handleModal: () => void }) => {
     setWebPages('')
   }
 
-  const { countries, } = useContext(AppContext);
+  const { countries } = useContext(AppContext);
 
   const addItem = useCallback(async () => {
     try {
@@ -425,9 +426,18 @@ const Modal = ({ title, isOpen, handleModal, children }: { title: string, isOpen
   )
 }
 const NavBar = () => {
+  const { sidebarStatus, setSidebarStatus } = useContext(AppContext);
+
+  const handleSidebar = () => {
+    setSidebarStatus(!sidebarStatus);
+  }
 
   return (<div className='navbar'>
     <div className='navbar-items sm-space-between'>
+      <div className='only-mobile'>
+        <button className='menu-hover' onClick={handleSidebar}>
+          <img src={arrowright} width="16" height="24" /></button>
+      </div>
       <div className='m-left'>
         <img src={search} /></div>
       <div><img src={contacts} /></div>
@@ -684,37 +694,50 @@ const Content = () => {
 }
 
 const SideBar = () => {
-  return (<div className='sidebar-content flex-col'>
-    <div className='py-2'>
-      <img src={logo} width='45px' height='45px' />
-    </div>
-    <div>
-      <div className='uppercase f-grey'><h2>General</h2></div>
-      <div className='flex card-sidebar'>
-        <div>
-          <img src={home} />
+  const { sidebarStatus, setSidebarStatus } = useContext(AppContext);
+  const handleSidebar = () => {
+    setSidebarStatus(!sidebarStatus);
+  }
+
+  return (
+    <div className={`sidebar ${sidebarStatus ? 'd-block slideIn' : 'slideOut d-none'} lg-block`}>
+      <div className='sidebar-content flex-col'>
+        <div className='py-2 flex'>
+          <div className='flex-80'>
+            <img src={logo} width='45px' height='45px' />
+          </div>
+          <div className='m-left only-mobile'>
+            <button className="no-outline" onClick={handleSidebar}><img src={closegrey} /></button>
+          </div>
         </div>
-        <div className='pl-1 f-green'><h2>Main</h2></div>
+        <div>
+          <div className='uppercase f-grey'><h2>General</h2></div>
+          <div className='flex card-sidebar'>
+            <div>
+              <img src={home} />
+            </div>
+            <div className='pl-1 f-green'><h2>Main</h2></div>
+          </div>
+        </div>
+        <div className='m-end py-3'>
+          <div className='f-white'><h2>Need help?</h2></div>
+          <div className='f-grey mb-2'><h2>Check our docs</h2></div>
+          <div>
+            <button className='f-large button-green'>Documentation</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div className='m-end py-3'>
-      <div className='f-white'><h2>Need help?</h2></div>
-      <div className='f-grey mb-2'><h2>Check our docs</h2></div>
-      <div>
-        <button className='f-large button-green'>Documentation</button>
-      </div>
-    </div>
-  </div>)
+    </div>)
 }
 function App() {
   const [countries, setCountries] = useState<Countries[]>([])
+  const [sidebarStatus, setSidebarStatus] = useState<boolean>(false)
+
   return (
-    <AppContext.Provider value={{ countries, setCountries }}>
+    <AppContext.Provider value={{ countries, setCountries, sidebarStatus, setSidebarStatus }}>
       <div className='App'>
         <div className='container'>
-          <div className='sidebar'>
-            <SideBar />
-          </div>
+          <SideBar />
           <div className='content'>
             <NavBar />
             <Content />
