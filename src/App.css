@@ -438,18 +438,6 @@ button.button-green {
   .modal-main {
     width: 100%;
   }
-
-  button.button-green {
-    padding: 0.65rem 1rem;
-  }
-
-  .pl-1 {
-    padding-left: 0.5rem;
-  }
-
-  .sidebar-content {
-    padding: 0rem 0.5rem;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -463,5 +451,23 @@ button.button-green {
 
   .px-3-lg {
     padding: 0 3rem;
+  }
+
+  button.button-green {
+    padding: 0.65rem 1rem;
+  }
+
+  .card-sidebar {
+    padding: 0.5rem 1rem;
+  }
+  .pl-1 {
+    padding-left: 0.5rem;
+  }
+
+  .sidebar {
+    width: 20%;
+  }
+  .sidebar-content {
+    padding: 0rem 1rem;
   }
 }
